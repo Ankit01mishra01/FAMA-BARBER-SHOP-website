@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Barbershop - Denton, TX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #23272f;
+      --accent: #faad13;
+      --text: #f4f4f4;
+      --secondary: #363b47;
+      --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+      --overlay-bg: rgba(35,39,47,0.85);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      font-family: 'Roboto', Arial, sans-serif;
+      color: var(--text);
+      background: #23272f;
+      /* Your barber shop background image with dark overlay */
+      background-image:
+        linear-gradient(rgba(30,30,30,0.85), rgba(30,30,30,0.85)),
+        url('https://imgs.search.brave.com/aj08gWnsqoPipeer__CpFLqetVKqFIHxPE0lwqSjujM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/dmVjdG9yc3RvY2su/Y29tL2kvcHJldmll/dy0xeC8xOS80MC9i/YXJiZXItaWNvbnMt/b24tYmxhY2stYmFj/a2dyb3VuZC12ZWN0/b3ItMTcxMzE5NDAu/anBn');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      transition: background 1s;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(35, 39, 47, 0.92);
+      box-shadow: var(--shadow);
+      padding: 2rem 0 1rem 0;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+      animation: fadeInDown 1s;
+    }
+    header h1 {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--accent);
+      font-size: 2.8rem;
+      letter-spacing: 2px;
+      margin: 0;
+      text-shadow: 2px 2px 10px #0004;
+      animation: slideInLeft 1s;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+    }
+
+    .info {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin: 2rem 0 1rem 0;
+      flex-wrap: wrap;
+      animation: fadeIn 1.5s;
+    }
+    .info-item {
+      background: var(--secondary);
+      padding: 1.2rem 2rem;
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      font-size: 1.1rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+      min-width: 250px;
+      margin: 0.5rem 0;
+      animation: popIn 0.8s;
+    }
+    .info-item:hover {
+      transform: scale(1.05) translateY(-4px) rotate(-1deg);
+      box-shadow: 0 8px 32px 0 rgba(250, 173, 19, 0.18);
+      background: #2d313a;
+    }
+
+    /* Gallery Section */
+    .gallery-section {
+      max-width: 1100px;
+      margin: 2.5rem auto 1.5rem auto;
+      padding: 2rem;
+      background: rgba(54, 59, 71, 0.97);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      animation: fadeInUp 1.2s;
+    }
+    .gallery-section h2 {
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      text-align: center;
+      letter-spacing: 1px;
+      animation: slideInRight 1s;
+    }
+    .gallery-categories {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .gallery-category {
+      background: var(--secondary);
+      color: var(--accent);
+      padding: 0.6rem 1.4rem;
+      border-radius: 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s, color 0.3s;
+      border: none;
+      outline: none;
+      margin-bottom: 0.5rem;
+    }
+    .gallery-category.active, .gallery-category:hover {
+      background: var(--accent);
+      color: #23272f;
+    }
+
+    .gallery-grids {
+      display: none;
+      animation: fadeIn 1s;
+    }
+    .gallery-grids.active {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      animation: fadeIn 1s;
+    }
+
+    .gallery-card {
+      position: relative;
+      width: 270px;
+      height: 180px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.18);
+      background: #222;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      animation: fadeInGallery 0.8s forwards;
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s;
+    }
+    .gallery-card:hover img {
+      transform: scale(1.07) rotate(-2deg);
+    }
+    .gallery-card .overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: var(--overlay-bg);
+      color: var(--accent);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      transition: opacity 0.4s;
+      padding: 1.2rem;
+      text-align: center;
+    }
+    .gallery-card:hover .overlay {
+      opacity: 1;
+    }
+    .gallery-card .overlay h3 {
+      margin: 0 0 0.4em 0;
+      font-size: 1.3em;
+      font-family: 'Montserrat', sans-serif;
+      color: var(--accent);
+    }
+    .gallery-card .overlay p {
+      color: #fff;
+      font-size: 1em;
+      margin: 0;
+    }
+    .gallery-grids .gallery-card:nth-child(1) { animation-delay: 0.2s;}
+    .gallery-grids .gallery-card:nth-child(2) { animation-delay: 0.4s;}
+    .gallery-grids .gallery-card:nth-child(3) { animation-delay: 0.6s;}
+    .gallery-grids .gallery-card:nth-child(4) { animation-delay: 0.8s;}
+    .gallery-grids .gallery-card:nth-child(5) { animation-delay: 1s;}
+    .gallery-grids .gallery-card:nth-child(6) { animation-delay: 1.2s;}
+
+    /* Services and Map */
+    .services, .map-section {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: rgba(54, 59, 71, 0.97);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 2rem 2.5rem;
+      animation: fadeInUp 1.2s;
+    }
+    .services h2, .map-section h2 {
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: 1px;
+      text-align: center;
+      animation: slideInRight 1s;
+    }
+    .services ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .services li {
+      font-size: 1.15rem;
+      margin-bottom: 0.9rem;
+      position: relative;
+      padding-left: 1.7em;
+      opacity: 0;
+      animation: fadeInList 0.8s forwards;
+    }
+    .services li::before {
+      content: "✂️";
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1.1em;
+      color: var(--accent);
+      transition: transform 0.3s;
+    }
+    .services li:hover::before {
+      transform: rotate(-20deg) scale(1.2);
+    }
+    .services li:nth-child(1) { animation-delay: 0.2s; }
+    .services li:nth-child(2) { animation-delay: 0.4s; }
+    .services li:nth-child(3) { animation-delay: 0.6s; }
+    .services li:nth-child(4) { animation-delay: 0.8s; }
+
+    .visit {
+      text-align: center;
+      margin: 2.5rem 0 1rem 0;
+      animation: fadeIn 2s;
+    }
+    .visit h3 {
+      color: var(--accent);
+      font-family: 'Montserrat', sans-serif;
+      margin-bottom: 0.5rem;
+      font-size: 1.3rem;
+      letter-spacing: 1px;
+    }
+    .visit p {
+      margin: 0.3rem 0;
+      font-size: 1.1rem;
+    }
+
+    .map-section {
+      text-align: center;
+    }
+    .mapouter {
+      position: relative;
+      text-align: right;
+      width: 100%;
+      height: 320px;
+      margin: 0 auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 16px 0 rgba(31, 38, 135, 0.18);
+    }
+    .gmap_canvas {
+      overflow: hidden;
+      background: none!important;
+      width: 100%;
+      height: 320px;
+    }
+    .gmap_iframe {
+      width: 100%!important;
+      height: 320px!important;
+      border: none;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-80px);}
+      to { opacity: 1; transform: translateX(0);}
+    }
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(80px);}
+      to { opacity: 1; transform: translateX(0);}
+    }
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8);}
+      100% { opacity: 1; transform: scale(1);}
+    }
+    @keyframes fadeInList {
+      to { opacity: 1; }
+    }
+    @keyframes fadeInGallery {
+      to { opacity: 1; }
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .gallery-card {
+        width: 220px;
+        height: 140px;
+      }
+    }
+    @media (max-width: 900px) {
+      .gallery-section {
+        padding: 1.2rem 0.5rem;
+      }
+      .gallery-card {
+        width: 45vw;
+        height: 28vw;
+        min-width: 140px;
+        min-height: 100px;
+      }
+      .gallery-grids.active {
+        gap: 1rem;
+      }
+    }
+    @media (max-width: 700px) {
+      .info {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+      .services, .map-section, .gallery-section {
+        padding: 1.1rem 0.5rem;
+      }
+      .gallery-card {
+        width: 90vw;
+        height: 40vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Barbershop - Denton, TX</h1>
+  </header>
+  <div class="info">
+    <div class="info-item">
+      <strong>Address:</strong><br>
+      500 N Bell Ave #109, Denton, TX 76209, United States
+    </div>
+    <div class="info-item">
+      <strong>Phone:</strong><br>
+      <a href="tel:+19406129127" style="color:var(--accent); text-decoration:none;">+1 940-612-9127</a>
+    </div>
+    <div class="info-item">
+      <strong>Service comment:</strong><br>
+      <em>"Costly compared to other barbershops with better haircuts"</em>
+    </div>
+    <div class="info-item">
+      <strong>Review Count:</strong><br>
+      116+ reviews
+    </div>
+  </div>
+
+  <!-- Gallery Section with overlays and categories -->
+  <section class="gallery-section">
+    <h2>Gallery</h2>
+    <div class="gallery-categories">
+      <button class="gallery-category active" data-category="interior">Shop Interior</button>
+      <button class="gallery-category" data-category="barbers">Barbers at Work</button>
+      <button class="gallery-category" data-category="styles">Customer Styles</button>
+    </div>
+    <!-- Shop Interior -->
+    <div class="gallery-grids active" id="gallery-interior">
+      <div class="gallery-card">
+        <img src="https://imgs.search.brave.com/9QIgORxE3zsuVZVVYK_BdpsryA49Af3wIKJj6WiLdwM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tYWRl/bWFuYmFyYmVyLmNv/bS9jZG4vc2hvcC9h/cnRpY2xlcy9wZXRl/ci1vbGV4YS1wTDdJ/cmVYOUFHWS11bnNw/bGFzaF8xMl82NTZ4/NTgyX2Nyb3BfY2Vu/dGVyX2VkYTliYjRm/LTJlMDAtNGVmMy1i/ZmI2LWNlMzU4NTc2/NjkyY182NTZ4NTgy/X2Nyb3BfY2VudGVy/XzFfMzIweDE5NV9j/cm9wX2NlbnRlci53/ZWJwP3Y9MTcyNzY4/NTUyNQ" alt="Shop Interior 1">
+        <div class="overlay">
+          <h3>Modern Waiting Area</h3>
+          <p>Relax in our stylish, comfortable lounge before your cut.</p>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://imgs.search.brave.com/EB_v_IwZBK6OZk5UWswYTJ4edSurL7kfscFbxgYIqQM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9qb2hu/YmFyYmVyc29ucy5j/b20vY2RuL3Nob3Av/Y29sbGVjdGlvbnMv/aGVhZGVyLWJhcmJl/cnN0dWVobGUud2Vi/cD92PTE3MDQ3Mjgy/OTQmd2lkdGg9MTE3/MA" alt="Shop Interior 2">
+        <div class="overlay">
+          <h3>Classic Barber Chairs</h3>
+          <p>Experience tradition and comfort in every seat.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Barbers at Work -->
+    <div class="gallery-grids" id="gallery-barbers">
+      <div class="gallery-card">
+        <img src="https://imgs.search.brave.com/iA-Wk7-ZY2YZeiGfrXabl2eD6eWiu46lWHphymmokMY/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9jYW1w/dXMuZWR1L19uZXh0/L2ltYWdlP3VybD1o/dHRwczovL2Jsb2cu/Y2FtcHVzLmVkdS9j/b250ZW50L2ltYWdl/cy8yMDIzLzEwL3do/YXQtYmFyYmVycy1k/by5qcGcmdz0zODQw/JnE9NzU.jpeg" alt="Barber at Work 1">
+        <div class="overlay">
+          <h3>Precision in Action</h3>
+          <p>Our skilled barbers at work, crafting your perfect look.</p>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://imgs.search.brave.com/opQnGNlc8KaBKOUxh-v0CVBXMy2vq6HRtJoZTBcsMxM/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9yZXMu/Y2xvdWRpbmFyeS5j/b20vaG5wYjQ3ZWp0/L2ltYWdlL3VwbG9h/ZC92MTY4ODY3MDE2/Mi9pNXJrejJ5cDZx/c3Z2cXJrc2d2YS5q/cGc" alt="Barber at Work 2">
+        <div class="overlay">
+          <h3>Attention to Detail</h3>
+          <p>Every cut is a work of art, made just for you.</p>
+        </div>
+      </div>
+    </div>
+    <!-- Customer Styles -->
+    <div class="gallery-grids" id="gallery-styles">
+      <div class="gallery-card">
+        <img src="https://imgs.search.brave.com/YDvwTVdZ4QrQJ-OyTXkuNuILCY2YYalA-Rj2NoVOMfQ/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93d3cu/YnlyZGllLmNvbS90/aG1iL0l1ekRNbmdV/bkREVlZIaVVQazA4/d2hfczg1Yz0vMTUw/MHgwL2ZpbHRlcnM6/bm9fdXBzY2FsZSgp/Om1heF9ieXRlcygx/NTAwMDApOnN0cmlw/X2ljYygpLzkyODMy/MTM5XzM3MDQ5NTc2/NzI4NzkzOTlfNTMz/NzYyMjYxNjcxOTkw/Mjc3MF9uLWI0ZjU4/MTUwYTQ1MzQyZGFh/ZjE2MmQxYzE5MDNj/Yjk3LmpwZw" alt="Customer Style 1">
+        <div class="overlay">
+          <h3>Fresh Fades</h3>
+          <p>Check out our signature fades and sharp lines.</p>
+        </div>
+      </div>
+      <div class="gallery-card">
+        <img src="https://imgs.search.brave.com/126xTQshwik1tkhgswJyngYeQFiq2za_W_6SRfiEjos/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly93aW1w/b2xlY2xpbmljLmNv/bS93cC1jb250ZW50/L3VwbG9hZHMvMjAy/MS8wNS9NYW4tdHJp/bW1pbmctYW5kLXN0/eWxpbmctaGlzLWJl/YXJkLmpwZw" alt="Customer Style 2">
+        <div class="overlay">
+          <h3>Beard Grooming</h3>
+          <p>From subtle trims to bold beards, we do it all!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="services">
+    <h2>Our Services</h2>
+    <ul>
+      <li>Haircuts for all ages</li>
+      <li>Beard trims &amp; shaves</li>
+      <li>On-site grooming</li>
+      <li>Walk-ins &amp; appointments welcome</li>
+    </ul>
+  </section>
+
+  <section class="map-section">
+    <h2>Find Us on the Map</h2>
+    <div class="mapouter">
+      <div class="gmap_canvas">
+        <iframe class="gmap_iframe"
+          frameborder="0"
+          scrolling="no"
+          marginheight="0"
+          marginwidth="0"
+          src="https://maps.google.com/maps?q=500%20N%20Bell%20Ave%20%23109,%20Denton,%20TX%2076209&t=&z=15&ie=UTF8&iwloc=&output=embed"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <div class="visit">
+    <h3>Visit Us:</h3>
+    <p>500 N Bell Ave #109,</p>
+    <p>Denton, TX 76209, United States</p>
+  </div>
+
+  <script>
+    // Gallery category switching logic
+    const categories = document.querySelectorAll('.gallery-category');
+    const grids = {
+      interior: document.getElementById('gallery-interior'),
+      barbers: document.getElementById('gallery-barbers'),
+      styles: document.getElementById('gallery-styles')
+    };
+
+    categories.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active from all
+        categories.forEach(c => c.classList.remove('active'));
+        Object.values(grids).forEach(g => g.classList.remove('active'));
+        // Add active to selected
+        btn.classList.add('active');
+        grids[btn.dataset.category].classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
